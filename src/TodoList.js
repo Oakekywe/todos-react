@@ -3,29 +3,49 @@ import React, { useState } from "react";
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
+  const [editIndex, setEditIndex] = useState(-1);
 
   const handleInputChange = (event) => {
     setNewTodo(event.target.value);
   };
-  
+
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      handleAddTodo();
+      if (editIndex === -1) {
+        handleAddTodo();
+      } else {
+        handleEditTodo();
+      }
     }
   };
-  
+
   const handleAddTodo = () => {
     if (newTodo.trim()) {
       setTodos([...todos, newTodo]);
       setNewTodo("");
     }
   };
-  
+
+  const handleEditTodo = () => {
+    if (newTodo.trim()) {
+      const updatedTodos = [...todos];
+      updatedTodos[editIndex] = newTodo;
+      setTodos(updatedTodos);
+      setNewTodo("");
+      setEditIndex(-1);
+    }
+  };
 
   const handleDeleteTodo = (index) => {
     const updatedTodos = [...todos];
     updatedTodos.splice(index, 1);
     setTodos(updatedTodos);
+  };
+
+  const handleEditClick = (index) => {
+    const todoToEdit = todos[index];
+    setNewTodo(todoToEdit);
+    setEditIndex(index);
   };
 
   return (
@@ -42,21 +62,29 @@ const TodoList = () => {
         />
         <button
           className="bg-blue-500 text-white px-4 py-2"
-          onClick={handleAddTodo}
+          onClick={editIndex === -1 ? handleAddTodo : handleEditTodo}
         >
-          Add
+          {editIndex === -1 ? "Add" : "Edit"}
         </button>
       </div>
       <ul className="list-disc">
         {todos.map((todo, index) => (
           <li key={index} className="flex items-center justify-between mb-2">
             <span>{todo}</span>
-            <button
-              className="text-red-500"
-              onClick={() => handleDeleteTodo(index)}
-            >
-              Delete
-            </button>
+            <div>
+              <button
+                className="text-blue-500 mr-2"
+                onClick={() => handleEditClick(index)}
+              >
+                Edit
+              </button>
+              <button
+                className="text-red-500"
+                onClick={() => handleDeleteTodo(index)}
+              >
+                Delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
