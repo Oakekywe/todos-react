@@ -72,7 +72,7 @@ const TodoList = () => {
   const remainingCount = completed.filter((isCompleted) => !isCompleted).length;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 lg:px-12 ">
       {/* heading & search */}
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold mb-4">Todo List</h1>
@@ -115,23 +115,26 @@ const TodoList = () => {
             <span>{todo}</span>
             <div>
               <button
-                className="text-blue-500 mr-2"
+                className="text-blue-500 text-xl mr-3"
                 onClick={() => handleEditClick(index)}
               >
                 <i className="fa-regular fa-pen-to-square"></i>
               </button>
               <button
-                className="text-red-500"
+                className="text-red-500 text-xl"
                 onClick={() => handleDeleteTodo(index)}
               >
                 <i className="fa-solid fa-trash-can"></i>
               </button>
               <button
-                className="text-green-500 ml-2"
+                className="text-green-500 ml-3 text-xl"
                 onClick={() => handleToggleComplete(index)}
               >
-                {completed[index] ? <i className="fa-regular fa-circle-xmark"></i> : <i className="fa-regular fa-circle-check"></i>}
-                
+                {completed[index] ? (
+                  <i className="fa-regular fa-circle-xmark"></i>
+                ) : (
+                  <i className="fa-regular fa-circle-check"></i>
+                )}
               </button>
             </div>
           </li>
